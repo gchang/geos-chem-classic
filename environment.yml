@@ -1,0 +1,41 @@
+# Conda environment for building and running GEOS-Chem Classic on Linux x86-64.
+#   conda env create -f environment.yml
+#   conda activate geos-chem-classic
+# Then build as in the GEOS-Chem Classic quick-start guide
+# (cmake <code dir> -DRUNDIR=<run dir>; make -j; make install).
+# Tested with GEOS-Chem Classic 14.8.0 (TransportTracers 4x5 MERRA-2).
+name: geos-chem-classic
+channels:
+  - conda-forge
+dependencies:
+  # Python for the run-directory tools (download_data.py needs pyyaml;
+  # metrics.py and the other analysis scripts need numpy and xarray).
+  # 3.12 is the version tested.
+  - python=3.12
+  - pyyaml
+  - numpy
+  - xarray
+
+  # Compilers. gfortran must be the same major version that built
+  # conda-forge's netcdf-fortran, because Fortran .mod files are tied to the
+  # compiler version: gfortran 14 stops with "netcdf.mod ... created by a
+  # different version of GNU Fortran", gfortran 15 works. If netcdf-fortran
+  # moves to a newer GCC, raise all three pins together. gcc and gxx are
+  # kept at the same release so the whole toolchain matches.
+  - gfortran=15
+  - gcc=15
+  - gxx=15
+
+  # The CMake build.
+  - cmake
+  - make
+
+  # NetCDF: the Fortran and C libraries the model links against, and the
+  # netcdf4 Python module xarray uses to read the model output.
+  - netcdf-fortran
+  - libnetcdf
+  - netcdf4
+
+  # Input data download: download_data.py fetches files with wget from the
+  # geoschem+http and other HTTP portals.
+  - wget

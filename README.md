@@ -14,6 +14,8 @@
 This is the offical repository for **GEOS-Chem Classic**.
 
 > This copy is GEOS-Chem Classic 14.8.0 with fixed HEMCO and GEOS-Chem submodules (see [MAAP_CHANGES.md](MAAP_CHANGES.md)). Clone it with `git clone --recurse-submodules https://github.com/gchang/geos-chem-classic.git`.
+>
+> To build it, `conda env create -f environment.yml` gives the compilers, CMake, NetCDF libraries and Python tools it was tested with; then follow the quick-start guide in the documentation.
 
 :bulb: Documentation: https://geos-chem.readthedocs.io
 

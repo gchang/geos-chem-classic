@@ -1,0 +1,24 @@
+# ======================================================================
+# ReadTheDocs requirements file
+#
+# If you wish to install the dependencies for building the ReadTheDocs
+# ReadTheDocs documentation from PyPI (the Python Package Index), use:
+#
+# $ pip install -r read_the_docs_requirements.txt
+# ======================================================================
+#
+# --- Core Sphinx ---
+sphinx==8.2.3
+docutils==0.21.2
+
+# --- Theme ---
+sphinx-rtd-theme==3.1.0
+
+# --- Extensions ---
+sphinxcontrib-bibtex==2.6.5
+myst-parser==5.0.0
+sphinx-autobuild==2024.2.4
+
+# --- Templating ---
+jinja2==3.1.6
+

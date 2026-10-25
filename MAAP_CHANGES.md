@@ -41,6 +41,12 @@ Known limit that remains: GEOS-Chem itself builds some input paths (for example 
 
 One paragraph near the top of `README.md` pointing to this file and giving the clone command above.
 
+## 2026-10-25: environment.yml
+
+The build and run dependencies used to be written down only in the online documentation and in each cluster's module setup. `environment.yml` now lists them for conda (conda-forge only): Python 3.12 with pyyaml, numpy and xarray for the run-directory tools, gfortran, gcc and gxx 15, CMake and make, netCDF-Fortran, netCDF-C and the netcdf4 Python module, and wget for `download_data.py`. gfortran is pinned to 15 because conda-forge's netcdf-fortran ships Fortran module files that gfortran 14 cannot read; Python is pinned to the version tested. The README points to it. No code changes, so results do not change.
+
+Checked on 2026-10-25: `conda env create -f environment.yml` took 40 s (gfortran 15.3.0, netcdf-fortran 4.6.4, netCDF-C 4.10.1, CMake 4.4.4, Python 3.12.15). In that environment, a fresh `git clone --recurse-submodules` of this repository (every submodule fetched from GitHub at the commit in the table above) built in 2 min 12 s with no compiler warnings, `download_data.py` fetched the same 22 TransportTracers files (555 MB, same restart md5), and the 1-hour and 24-hour TransportTracers runs gave the same checks as below (PassiveTracer mass change +1.2e-13 and +1.8e-12, radon-222 budget closes, decay constant 2.095e-6 per second).
+
 ## Check
 
 On 2026-10-25, on Linux x86-64 in a fresh conda-forge environment (`gfortran=15 gcc=15 gxx=15 cmake make netcdf-fortran libnetcdf netcdf4 wget pyyaml numpy xarray`; gfortran 15.3.0, netcdf-fortran 4.6.4, CMake 4.4.3), with 4 OpenMP threads, `OMP_STACKSIZE=500m` and an unlimited stack:

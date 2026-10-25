@@ -1,9 +1,9 @@
 [submodule "GEOS-Chem"]
 	path = src/GEOS-Chem
-	url = https://github.com/geoschem/geos-chem.git
+	url = https://github.com/gchang/geos-chem.git
 [submodule "HEMCO"]
 	path = src/HEMCO
-	url = https://github.com/geoschem/hemco.git
+	url = https://github.com/gchang/hemco.git
 [submodule "geos-chem-shared-docs"]
 	path = docs/source/geos-chem-shared-docs
 	url = https://github.com/geoschem/geos-chem-shared-docs.git

@@ -10,8 +10,8 @@ GEOS-Chem Classic is a superproject; the model code lives in submodules. Two of 
 
 | Path | Repository | Commit | Notes |
 |---|---|---|---|
-| `src/HEMCO` | https://github.com/gchang/hemco | ce04b23 | HEMCO 3.13.0 (upstream 870e880) plus one fix, see its `MAAP_CHANGES.md` |
-| `src/GEOS-Chem` | https://github.com/gchang/geos-chem | d3e8f2c | GEOS-Chem 14.8.0 (upstream a4551f9) plus three fixes, see its `MAAP_CHANGES.md` |
+| `src/HEMCO` | https://github.com/gchang/hemco | 29b2e3f | HEMCO 3.13.0 (upstream 870e880) plus one fix, see its `MAAP_CHANGES.md` |
+| `src/GEOS-Chem` | https://github.com/gchang/geos-chem | 428ec73 | GEOS-Chem 14.8.0 (upstream a4551f9) plus three fixes, see its `MAAP_CHANGES.md` |
 | `src/Cloud-J` | https://github.com/geoschem/Cloud-J | 16d18b0 | unchanged |
 | `src/HETP` | https://github.com/geoschem/HETerogeneous-vectorized-or-Parallel | df2f942 | unchanged |
 | `docs/source/geos-chem-shared-docs` | https://github.com/geoschem/geos-chem-shared-docs | f882128 | unchanged |
@@ -51,7 +51,7 @@ Checked on 2026-10-25: `conda env create -f environment.yml` took 40 s (gfortran
 
 On 2026-10-25, on Linux x86-64 in a fresh conda-forge environment (`gfortran=15 gcc=15 gxx=15 cmake make netcdf-fortran libnetcdf netcdf4 wget pyyaml numpy xarray`; gfortran 15.3.0, netcdf-fortran 4.6.4, CMake 4.4.3), with 4 OpenMP threads, `OMP_STACKSIZE=500m` and an unlimited stack:
 
-1. Fresh recursive clone of this repository (commit 5d62672, before this file was added): every submodule at the commit in the table above.
+1. Fresh recursive clone of this repository (commit e84b529, before this file was added): every submodule at the commit in the table above.
 2. Run directories made by piping the answers into `createRunDir.sh` (`printf '7\n1\n1\n1\n<dir>\n<name>\nn\n'` for 4x5 MERRA-2 TransportTracers, `'1\n1\n1\n1\n1\n...'` for 4x5 MERRA-2 fullchem), with `GC_DATA_ROOT` set to a 190-character path and no `GC_USER_REGISTERED`: registration was skipped with a note, and no registration server was contacted.
 3. Build the documented way (`cmake <code dir> -DRUNDIR=<run dir>`, `make -j4`, `make install`): 2 min 11 s, 0.6 GB peak memory, no compiler warnings.
 4. Fullchem dry run with the 190-character root: runs to the end and lists the volcano tables with paths of 262 and 267 characters. Upstream 14.8.0 stops in the same dry run with `End of record` (in PARANOX).

@@ -47,6 +47,12 @@ The build and run dependencies used to be written down only in the online docume
 
 Checked on 2026-10-25: `conda env create -f environment.yml` took 40 s (gfortran 15.3.0, netcdf-fortran 4.6.4, netCDF-C 4.10.1, CMake 4.4.4, Python 3.12.15). In that environment, a fresh `git clone --recurse-submodules` of this repository (every submodule fetched from GitHub at the commit in the table above) built in 2 min 12 s with no compiler warnings, `download_data.py` fetched the same 22 TransportTracers files (555 MB, same restart md5), and the 1-hour and 24-hour TransportTracers runs gave the same checks as below (PassiveTracer mass change +1.2e-13 and +1.8e-12, radon-222 budget closes, decay constant 2.095e-6 per second).
 
+## 2026-10-28: binutils in environment.yml
+
+CMake makes GEOS-Chem's static libraries with `ar` and links with `ld`, which come from binutils. conda-forge's gfortran, gcc and gxx do not bring binutils, so in an image with no system copy (such as `condaforge/miniforge3`) the build stopped at its first library with "Error running link command: no such file or directory" (libHeadersHco.a, libHETP_core.a, libKPP_FirstPass.a). Earlier checks passed because the machine had a system binutils. `environment.yml` now lists `binutils`. No code changes, so results do not change.
+
+Checked on 2026-10-28 from a fresh recursive clone with the system's ar, ranlib, nm, ld and as hidden from PATH: with the previous `environment.yml` the build fails at those libraries after 10 s; with this one, `cmake` then `make -j4` builds `gcclassic` in 1 min 31 s at 0.6 GB.
+
 ## Check
 
 On 2026-10-25, on Linux x86-64 in a fresh conda-forge environment (`gfortran=15 gcc=15 gxx=15 cmake make netcdf-fortran libnetcdf netcdf4 wget pyyaml numpy xarray`; gfortran 15.3.0, netcdf-fortran 4.6.4, CMake 4.4.3), with 4 OpenMP threads, `OMP_STACKSIZE=500m` and an unlimited stack:

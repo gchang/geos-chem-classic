@@ -53,6 +53,14 @@ CMake makes GEOS-Chem's static libraries with `ar` and links with `ld`, which co
 
 Checked on 2026-10-28 from a fresh recursive clone with the system's ar, ranlib, nm, ld and as hidden from PATH: with the previous `environment.yml` the build fails at those libraries after 10 s; with this one, `cmake` then `make -j4` builds `gcclassic` in 1 min 31 s at 0.6 GB.
 
+## 2026-10-28: gettext in environment.yml
+
+`createRunDir.sh` fills its run-directory templates with `envsubst` (`src/GEOS-Chem/run/GCClassic/init_rd.sh`, line 76), which is part of gettext and not of a plain container image. Without it the script still says "Created" and exits 0, but every templated file is empty, so `gcclassic` reads an empty `geoschem_config.yml` and stops with "UNKNOWN is not a valid simulation". `environment.yml` now lists `gettext`. No code changes, so results do not change.
+
+`createRunDir.sh` also tries `aws s3 cp --request-payer requester` for the sample restart file when the kernel name contains "aws" (`createRunDir.sh:1261`, `setupForRestarts.sh:368`). The AWS command line is left out on purpose: that copy is billed to whoever runs it, and without it the restart comes from the free `geoschem+http` portal through `download_data.py`, as in the checks below.
+
+Checked on 2026-10-28 from a fresh recursive clone with the system's envsubst, aws and binutils hidden from PATH, `GC_DATA_ROOT` and `HOME` set in the environment, answers `7 1 1 1 <dir> gc_run n`, then `cmake`, `make -j4`, `make install` and `./gcclassic --dryrun`: with the previous `environment.yml` the run directory's `geoschem_config.yml` is 0 bytes and the dry run stops with "UNKNOWN is not a valid simulation"; with this one it is the TransportTracers configuration and the dry run ends normally.
+
 ## Check
 
 On 2026-10-25, on Linux x86-64 in a fresh conda-forge environment (`gfortran=15 gcc=15 gxx=15 cmake make netcdf-fortran libnetcdf netcdf4 wget pyyaml numpy xarray`; gfortran 15.3.0, netcdf-fortran 4.6.4, CMake 4.4.3), with 4 OpenMP threads, `OMP_STACKSIZE=500m` and an unlimited stack:

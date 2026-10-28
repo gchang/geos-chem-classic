@@ -26,9 +26,12 @@ dependencies:
   - gcc=15
   - gxx=15
 
-  # The CMake build.
+  # The CMake build. binutils gives the archiver (ar) and linker that
+  # CMake uses for the static libraries; conda-forge's compilers do not
+  # bring them, and a container image may have no system copy.
   - cmake
   - make
+  - binutils
 
   # NetCDF: the Fortran and C libraries the model links against, and the
   # netcdf4 Python module xarray uses to read the model output.

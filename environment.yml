@@ -42,3 +42,8 @@ dependencies:
   # Input data download: download_data.py fetches files with wget from the
   # geoschem+http and other HTTP portals.
   - wget
+
+  # Run directory setup: createRunDir.sh fills its templates with envsubst
+  # (init_rd.sh), which comes with gettext. Without it every templated file,
+  # geoschem_config.yml included, is written empty.
+  - gettext
